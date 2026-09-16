@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คดี #256901</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --void:#040404;
+  --deep:#080808;
+  --pit:#0e0e0e;
+  --shaft:#161616;
+  --coal:#222222;
+  --iron:#333333;
+  --ash:#555555;
+  --smoke:#888888;
+  --fog:#aaaaaa;
+  --bone:#cccccc;
+  --chalk:#e8e8e8;
+  --white:#f5f5f5;
+
+  --blood:#8b1a1a;
+  --blood-dim:#5a1010;
+  --blood-glow:rgba(139,26,26,0.15);
+  --amber:#9a6200;
+  --amber-glow:rgba(154,98,0,0.12);
+  --amber-text:#c8880a;
+  --tape:#c8a84b;
+  --tape-dim:rgba(200,168,75,0.08);
+  
+  --r:4px;
+  --r-lg:8px;
+  --serif:'Noto Serif Thai',serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+
+html{font-size:15px;-webkit-font-smoothing:antialiased;}
+body{
+  font-family:var(--serif);
+  background:var(--void);
+  color:var(--chalk);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+/* grain overlay */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;
+}
+
+.page{display:none;}
+.page.active{display:flex;flex-direction:column;min-height:100vh;}
+
+/* ══ INTRO ══ */
+#page-intro{
+  background:var(--void);
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+/* blood-red diagonal slash across intro */
+#page-intro::before{
+  content:'';
+  position:absolute;
+  top:-40%;right:-10%;
+  width:55%;height:200%;
+  background:linear-gradient(180deg,var(--blood-dim) 0%,transparent 60%);
+  transform:skewX(-12deg);
+  pointer-events:none;
+  opacity:0.5;
+}
+
+.intro-inner{
+  position:relative;z-index:1;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.intro-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:28px 40px;
+  border-bottom:1px solid var(--shaft);
+}
+
+.intro-case-id{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.2em;
+  color:var(--ash);
+}
+
+.intro-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--blood);
+  letter-spacing:0.15em;
+}
+.dot-pulse{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--blood);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.7);}}
+
+.intro-body{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px 40px;
+  max-width:700px;
+}
+
+.intro-eyebrow{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.18em;
+  color:var(--blood);
+  margin-bottom:24px;
+}
+
+.intro-title{
+  font-size:clamp(36px,6vw,72px);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.025em;
+  color:var(--white);
+  margin-bottom:10px;
+}
+.intro-title-sub{
+  font-size:clamp(20px,3.5vw,40px);
+  font-weight:300;
+  color:var(--smoke);
+  font-style:italic;
+  margin-bottom:36px;
+}
+
+.intro-desc{
+  font-size:14px;
+  color:var(--fog);
+  line-height:1.85;
+  max-width:480px;
+  margin-bottom:32px;
+  border-left:2px solid var(--blood-dim);
+  padding-left:16px;
+}
+
+.intro-warn{
+  display:flex;
+  gap:12px;
+  background:var(--tape-dim);
+  border:1px solid rgba(200,168,75,0.2);
+  border-radius:var(--r-lg);
+  padding:14px 18px;
+  font-size:12px;
+  color:var(--amber-text);
+  line-height:1.65;
+  max-width:480px;
+  margin-bottom:40px;
+}
+.intro-warn-icon{flex-shrink:0;font-size:14px;margin-top:1px;}
+
+.btn-start{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:var(--blood);
+  color:var(--white);
+  border:none;
+  border-radius:var(--r);
+  padding:14px 28px;
+  font-family:var(--serif);
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.2s,transform 0.15s;
+  letter-spacing:0.02em;
+  width:fit-content;
+}
+.btn-start:hover{background:#a02020;transform:translateY(-1px);}
+.btn-start svg{width:16px;height:16px;flex-shrink:0;}
+
+.intro-meta{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:0;
+  border-top:1px solid var(--shaft);
+  border-left:1px solid var(--shaft);
+  max-width:480px;
+  border-radius:var(--r);
+  overflow:hidden;
+  margin-top:48px;
+}
+.meta-cell{
+  border-right:1px solid var(--shaft);
+  border-bottom:1px solid var(--shaft);
+  padding:14px 18px;
+}
+.meta-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:0.15em;
+  color:var(--ash);
+  margin-bottom:4px;
+}
+.meta-val{
+  font-size:14px;
+  font-weight:600;
+  color:var(--chalk);
+}
+
+/* ══ GAME LAYOUT ══ */
+#page-game{
+  flex-direction:row;
+  background:var(--void);
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  flex-shrink:0;
+  background:var(--deep);
+  border-right:1px solid var(--shaft);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  position:sticky;
+  top:0;
+  overflow-y:auto;
+}
+
+.sb-head{
+  padding:20px 18px 16px;
+  border-bottom:1px solid var(--shaft);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.sb-head-mark{
+  width:3px;
+  height:28px;
+  background:var(--blood);
+  border-radius:2px;
+  flex-shrink:0;
+}
+.sb-head-text{}
+.sb-case-mono{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:0.2em;
+  color:var(--ash);
+}
+.sb-title{font-size:12px;font-weight:600;color:var(--fog);}
+
+/* progress */
+.sb-prog{padding:16px 18px;border-bottom:1px solid var(--shaft);}
+.sb-prog-row{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:10px;color:var(--ash);
+  margin-bottom:8px;
+}
+.prog-track{
+  height:2px;background:var(--shaft);border-radius:1px;overflow:hidden;
+}
+.prog-fill{
+  height:100%;background:var(--blood);border-radius:1px;
+  transition:width 0.4s ease;
+  box-shadow:0 0 8px rgba(139,26,26,0.6);
+}
+.pill-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:10px;}
+.pill{
+  width:14px;height:3px;border-radius:1px;
+  background:var(--shaft);transition:background 0.3s;
+}
+.pill.done{background:var(--blood);}
+
+/* suspect list */
+.sb-sec{padding:14px 18px;border-bottom:1px solid var(--shaft);}
+.sb-sec-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.18em;
+  color:var(--ash);margin-bottom:10px;
+}
+.sus-list{display:flex;flex-direction:column;gap:1px;}
+.sus-row{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 8px;border-radius:var(--r);
+  cursor:pointer;border:1px solid transparent;
+  transition:all 0.12s;
+}
+.sus-row:hover{background:var(--shaft);}
+.sus-row.flagged{
+  background:var(--blood-glow);
+  border-color:rgba(139,26,26,0.4);
+}
+.sus-av{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--pit);border:1px solid var(--coal);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:500;color:var(--ash);
+  flex-shrink:0;font-family:var(--mono);
+}
+.sus-row.flagged .sus-av{
+  background:rgba(139,26,26,0.2);
+  color:#e05252;border-color:rgba(139,26,26,0.5);
+}
+.sus-name{font-size:11px;color:var(--smoke);flex:1;line-height:1.35;}
+.sus-row.flagged .sus-name{color:var(--chalk);}
+.sus-hits{
+  display:flex;gap:2px;
+}
+.sh{width:4px;height:4px;border-radius:50%;background:var(--shaft);}
+.sh.on{background:var(--blood);box-shadow:0 0 4px rgba(139,26,26,0.8);}
+
+/* notebook */
+.nb-add{display:flex;gap:6px;margin-bottom:8px;}
+.nb-inp{
+  flex:1;background:var(--pit);
+  border:1px solid var(--coal);border-radius:var(--r);
+  padding:7px 10px;font-family:var(--serif);font-size:11px;color:var(--fog);
+}
+.nb-inp:focus{outline:none;border-color:var(--ash);}
+.nb-inp::placeholder{color:var(--iron);}
+.nb-btn{
+  background:var(--shaft);border:1px solid var(--coal);
+  border-radius:var(--r);color:var(--fog);
+  width:28px;height:28px;cursor:pointer;
+  font-size:16px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.nb-btn:hover{background:var(--coal);}
+.nb-notes{display:flex;flex-direction:column;gap:3px;max-height:140px;overflow-y:auto;}
+.nb-note{
+  display:flex;align-items:flex-start;gap:6px;
+  background:var(--pit);border:1px solid var(--coal);
+  border-radius:var(--r);padding:6px 8px;
+  font-size:11px;color:var(--smoke);line-height:1.45;
+}
+.nb-note span{flex:1;}
+.nb-del{
+  background:none;border:none;cursor:pointer;
+  color:var(--iron);font-size:13px;padding:0;flex-shrink:0;
+}
+.nb-del:hover{color:var(--blood);}
+.nb-empty{font-size:11px;color:var(--iron);padding:4px 0;}
+
+.sb-foot{padding:14px 18px;margin-top:auto;border-top:1px solid var(--shaft);}
+.btn-verdict{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;background:transparent;
+  border:1px solid var(--iron);border-radius:var(--r);
+  padding:10px;font-family:var(--serif);font-size:12px;font-weight:500;
+  color:var(--smoke);cursor:pointer;transition:all 0.15s;
+}
+.btn-verdict:hover{
+  background:var(--blood-glow);
+  border-color:var(--blood);
+  color:var(--chalk);
+}
+.btn-verdict svg{width:13px;height:13px;}
+
+/* ── MAIN ── */
+.main{
+  flex:1;display:flex;flex-direction:column;
+  overflow-y:auto;background:var(--void);
+}
+.main-tabs{
+  display:flex;border-bottom:1px solid var(--shaft);
+  background:var(--deep);padding:0 28px;
+  position:sticky;top:0;z-index:10;
+}
+.tab-btn{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--serif);font-size:12px;color:var(--ash);
+  padding:13px 16px;border-bottom:2px solid transparent;
+  display:flex;align-items:center;gap:6px;
+  transition:all 0.15s;white-space:nowrap;
+}
+.tab-btn:hover{color:var(--fog);}
+.tab-btn.active{color:var(--chalk);border-bottom-color:var(--blood);}
+.tab-btn svg{width:13px;height:13px;}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:flex;flex-direction:column;flex:1;}
+
+/* ── DRAW PANEL ── */
+#panel-draw{
+  align-items:center;justify-content:center;
+  padding:40px 24px;min-height:calc(100vh - 46px);
+}
+.draw-zone{width:100%;max-width:440px;}
+
+/* EVIDENCE CARD — redesigned */
+.card-wrap{
+  position:relative;
+  margin-bottom:20px;
+}
+/* tape strips — decorative */
+.card-tape{
+  position:absolute;
+  width:48px;height:14px;
+  background:rgba(200,168,75,0.18);
+  border:1px solid rgba(200,168,75,0.25);
+  z-index:2;
+}
+.card-tape.tl{top:-7px;left:20px;transform:rotate(-2deg);}
+.card-tape.tr{top:-7px;right:32px;transform:rotate(2.5deg);}
+
+.card{
+  position:relative;
+  background:var(--pit);
+  border:1px solid var(--coal);
+  border-radius:var(--r);
+  min-height:280px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:border-color 0.2s;
+}
+/* red left accent strip */
+.card::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--blood);
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.card.has-content::before{opacity:1;}
+.card.flip{animation:cardIn 0.3s ease both;}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.card-empty-state{
+  text-align:center;padding:40px;
+}
+.empty-icon{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--shaft);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.empty-icon svg{width:22px;height:22px;color:var(--ash);}
+.card-empty-state p{font-size:13px;color:var(--ash);line-height:1.65;}
+
+/* card content */
+.card-inner{padding:24px 28px 24px 32px;width:100%;}
+
+.card-meta-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:16px;
+}
+.card-seq{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.2em;
+  color:var(--ash);
+}
+.badge{
+  font-size:10px;font-weight:600;
+  padding:3px 10px;border-radius:2px;
+  letter-spacing:0.04em;font-family:var(--mono);
+}
+.badge-late{background:rgba(139,26,26,0.15);color:#c04040;border:1px solid rgba(139,26,26,0.3);}
+.badge-normal{background:rgba(30,80,40,0.15);color:#50a060;border:1px solid rgba(30,80,40,0.3);}
+.badge-absent{background:rgba(60,40,120,0.15);color:#8070c0;border:1px solid rgba(60,40,120,0.3);}
+
+.card-rule{height:1px;background:var(--shaft);margin-bottom:16px;}
+
+.card-person{font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.card-date{
+  font-family:var(--mono);font-size:11px;color:var(--amber-text);
+  margin-bottom:6px;
+}
+.card-loc{
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;color:var(--ash);margin-bottom:18px;
+}
+.card-loc svg{width:11px;height:11px;flex-shrink:0;}
+
+.card-note-box{
+  background:var(--deep);
+  border-left:2px solid var(--iron);
+  padding:10px 14px;
+  font-size:12px;color:var(--fog);
+  line-height:1.7;font-style:italic;
+  margin-bottom:14px;
+  border-radius:0 var(--r) var(--r) 0;
+}
+
+.flag-sus{
+  display:flex;align-items:flex-start;gap:8px;
+  background:rgba(139,26,26,0.1);
+  border:1px solid rgba(139,26,26,0.25);
+  border-radius:var(--r);
+  padding:9px 12px;
+  font-size:11px;color:#c04040;
+  margin-bottom:6px;
+  line-height:1.5;
+}
+.flag-sus svg{width:12px;height:12px;flex-shrink:0;margin-top:1px;}
+
+.flag-conflict{
+  display:flex;align-items:flex-start;gap:8px;
+  background:var(--amber-glow);
+  border:1px solid rgba(200,168,75,0.2);
+  border-radius:var(--r);
+  padding:9px 12px;
+  font-size:11px;color:var(--amber-text);
+  line-height:1.5;
+}
+.flag-conflict svg{width:12px;height:12px;flex-shrink:0;margin-top:1px;}
+
+.btn-draw{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;background:var(--blood);color:var(--white);
+  border:none;border-radius:var(--r);
+  padding:13px;font-family:var(--serif);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.02em;
+}
+.btn-draw:hover{background:#a02020;}
+.btn-draw:disabled{background:var(--shaft);color:var(--ash);cursor:not-allowed;}
+.btn-draw svg{width:15px;height:15px;}
+
+/* ── ALL PANEL ── */
+#panel-all{padding:28px;max-width:780px;}
+.ev-header{
+  display:flex;align-items:baseline;gap:12px;margin-bottom:20px;
+  border-bottom:1px solid var(--shaft);padding-bottom:14px;
+}
+.ev-title{font-size:16px;font-weight:700;color:var(--white);}
+.ev-sub{font-family:var(--mono);font-size:11px;color:var(--ash);}
+
+.ev-table{width:100%;border-collapse:collapse;}
+.ev-table thead th{
+  text-align:left;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;
+  color:var(--ash);padding:8px 10px;
+  border-bottom:1px solid var(--shaft);font-weight:400;
+}
+.ev-table tbody tr{border-bottom:1px solid var(--shaft);transition:background 0.1s;}
+.ev-table tbody tr:hover td{background:var(--pit);}
+.ev-table tbody tr.locked{opacity:1;}
+.ev-table tbody tr.locked td{
+  background:repeating-linear-gradient(90deg,var(--shaft) 0,var(--shaft) 40px,var(--pit) 40px,var(--pit) 60px);
+  height:38px;padding:0;
+}
+.ev-table td{padding:11px 10px;font-size:12px;vertical-align:middle;}
+.td-date{font-family:var(--mono);font-size:10px;color:var(--amber-text);white-space:nowrap;}
+.td-name{font-weight:600;color:var(--chalk);}
+.td-loc{color:var(--ash);font-size:11px;}
+.td-note{color:var(--fog);font-size:11px;font-style:italic;max-width:240px;}
+
+/* ══ VERDICT ══ */
+#page-verdict{
+  background:var(--void);
+  align-items:center;justify-content:center;
+  padding:60px 24px;
+}
+.verdict-wrap{
+  max-width:500px;width:100%;
+  border:1px solid var(--shaft);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+}
+.verdict-head{
+  background:var(--deep);
+  border-bottom:1px solid var(--shaft);
+  padding:20px 24px;
+  display:flex;align-items:center;gap:12px;
+}
+.verdict-head-mark{
+  width:3px;height:32px;background:var(--blood);border-radius:2px;
+}
+.verdict-h{font-size:18px;font-weight:700;color:var(--white);}
+.verdict-sub{font-size:12px;color:var(--smoke);margin-top:2px;}
+.verdict-body{padding:24px;}
+.vf-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;
+  color:var(--ash);display:block;margin-bottom:7px;
+}
+.vf-select{
+  width:100%;background:var(--pit);
+  border:1px solid var(--coal);border-radius:var(--r);
+  padding:10px 14px;font-family:var(--serif);font-size:13px;
+  color:var(--chalk);margin-bottom:18px;cursor:pointer;appearance:none;
+}
+.vf-select:focus{outline:none;border-color:var(--ash);}
+.vf-textarea{
+  width:100%;background:var(--pit);
+  border:1px solid var(--coal);border-radius:var(--r);
+  padding:12px 14px;font-family:var(--serif);font-size:12px;
+  color:var(--chalk);resize:vertical;min-height:90px;
+  line-height:1.65;margin-bottom:8px;
+}
+.vf-textarea:focus{outline:none;border-color:var(--ash);}
+.vf-textarea::placeholder{color:var(--iron);}
+.vf-error{font-size:11px;color:var(--blood);margin-bottom:14px;display:none;}
+.vf-row{display:flex;gap:8px;}
+.btn-cancel{
+  background:transparent;border:1px solid var(--coal);border-radius:var(--r);
+  padding:10px 18px;font-family:var(--serif);font-size:13px;
+  color:var(--ash);cursor:pointer;transition:all 0.15s;
+}
+.btn-cancel:hover{border-color:var(--ash);color:var(--fog);}
+.btn-confirm{
+  flex:1;background:var(--blood);color:var(--white);
+  border:none;border-radius:var(--r);
+  padding:10px 18px;font-family:var(--serif);font-size:13px;font-weight:600;
+  cursor:pointer;transition:background 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-confirm:hover{background:#a02020;}
+.btn-confirm svg{width:14px;height:14px;}
+.verdict-foot{
+  padding:14px 24px;border-top:1px solid var(--shaft);
+  background:var(--deep);
+}
+.btn-vback{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--serif);font-size:12px;color:var(--ash);
+  display:flex;align-items:center;gap:6px;
+  transition:color 0.15s;
+}
+.btn-vback:hover{color:var(--fog);}
+.btn-vback svg{width:13px;height:13px;}
+
+/* ══ RESULT ══ */
+#page-result{
+  background:var(--void);
+  align-items:center;justify-content:center;
+  padding:60px 24px;
+  min-height:100vh;
+}
+.result-wrap{max-width:560px;width:100%;}
+
+.result-verdict-banner{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:32px;
+}
+.result-icon{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.result-icon.correct{background:rgba(30,80,40,0.2);border:1px solid rgba(30,80,40,0.4);}
+.result-icon.wrong{background:var(--blood-glow);border:1px solid rgba(139,26,26,0.3);}
+.result-icon svg{width:22px;height:22px;}
+.result-icon.correct svg{color:#50a060;}
+.result-icon.wrong svg{color:var(--blood);}
+.result-verdict-text{}
+.result-verdict-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.2em;
+  color:var(--ash);margin-bottom:4px;
+}
+.result-verdict-h{font-size:22px;font-weight:700;color:var(--white);line-height:1.2;}
+
+.result-chosen-row{
+  background:var(--pit);border:1px solid var(--coal);
+  border-radius:var(--r);padding:14px 18px;
+  font-size:13px;color:var(--fog);line-height:1.65;
+  margin-bottom:16px;
+}
+.result-chosen-row strong{color:var(--white);}
+
+.result-section{
+  background:var(--pit);border:1px solid var(--coal);
+  border-radius:var(--r);padding:18px 20px;
+  margin-bottom:12px;
+}
+.result-section-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;
+  color:var(--ash);margin-bottom:10px;
+}
+.result-section p{font-size:12px;color:var(--fog);line-height:1.8;}
+.result-section p strong{color:var(--chalk);}
+.result-section p + p{margin-top:8px;}
+
+/* answer section — green tint */
+.result-section.answer{
+  background:rgba(20,50,30,0.2);
+  border-color:rgba(30,80,40,0.3);
+  border-left:3px solid rgba(30,80,40,0.6);
+}
+.result-section.answer p{color:rgba(150,210,170,0.9);}
+.result-section.answer p strong{color:var(--white);}
+
+.result-warn{
+  background:var(--amber-glow);border:1px solid rgba(200,168,75,0.15);
+  border-radius:var(--r);padding:12px 16px;
+  font-size:11px;color:var(--amber-text);line-height:1.65;
+  margin-top:12px;
+}
+
+.result-btns{display:flex;gap:8px;margin-top:24px;}
+.btn-replay{
+  flex:1;background:transparent;border:1px solid var(--coal);
+  border-radius:var(--r);padding:11px;
+  font-family:var(--serif);font-size:12px;font-weight:500;
+  color:var(--ash);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all 0.15s;
+}
+.btn-replay:hover{border-color:var(--iron);color:var(--fog);}
+.btn-replay svg{width:13px;height:13px;}
+.btn-back-ev{
+  flex:1;background:var(--blood);color:var(--white);
+  border:none;border-radius:var(--r);padding:11px;
+  font-family:var(--serif);font-size:12px;font-weight:600;
+  cursor:pointer;transition:background 0.15s;
+}
+.btn-back-ev:hover{background:#a02020;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  #page-game{flex-direction:column;}
+  .sidebar{
+    width:100%;height:auto;position:static;
+    border-right:none;border-bottom:1px solid var(--shaft);
+  }
+  .sb-sec:last-child{display:none;}
+  .main{overflow-y:visible;}
+  .main-tabs{padding:0 16px;}
+  #panel-draw,#panel-all{padding:24px 16px;}
+  .intro-header{padding:20px 20px;}
+  .intro-body{padding:40px 20px;}
+  .intro-title{font-size:clamp(30px,10vw,48px);}
+  .intro-meta{grid-template-columns:1fr 1fr;}
+  .verdict-body{padding:18px;}
+}
+
+@media(max-width:400px){
+  .intro-meta{grid-template-columns:1fr;}
+  .result-btns{flex-direction:column;}
+}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--shaft);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- ═══ INTRO ═══ -->
+<div id="page-intro" class="page active">
+  <div class="intro-inner">
+    <div class="intro-header">
+      <span class="intro-case-id">แฟ้มคดี / #256901</span>
+      <div class="intro-status">
+        <div class="dot-pulse"></div>
+        อยู่ระหว่างสืบสวน
+      </div>
+    </div>
+
+    <div class="intro-body">
+      <div class="intro-eyebrow">คดีลับ — ชั้น ม.5/6 ปีการศึกษา 2569</div>
+      <h1 class="intro-title">ใครโกหก</h1>
+      <div class="intro-title-sub">เรื่องมาโรงเรียน?</div>
+      <p class="intro-desc">
+        โรงเรียนดำรงราษฎร์สงเคราะห์ จ.เชียงราย — ฝ่ายปกครองพบพฤติกรรมน่าสงสัยในห้อง 324<br>
+        คุณรับบทนักสืบ ดึงหลักฐานทีละชิ้น วิเคราะห์ความขัดแย้ง หาตัวผู้กระทำ
+      </p>
+      <div class="intro-warn">
+        <span class="intro-warn-icon">⚠</span>
+        <span>มีหลักฐานบางชิ้นเป็นข้อมูลขัดแย้งหรือเท็จ — ต้องเปรียบเทียบหลายชิ้นก่อนสรุป อย่าเชื่อทุกอย่างที่อ่าน</span>
+      </div>
+      <button class="btn-start" onclick="startGame()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        รับคดีนี้
+      </button>
+
+      <div class="intro-meta">
+        <div class="meta-cell">
+          <div class="meta-label">หลักฐาน</div>
+          <div class="meta-val">12 ชิ้น</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">ผู้ต้องสงสัย</div>
+          <div class="meta-val">6 คน</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">ช่วงเวลา</div>
+          <div class="meta-val">1–7 ก.ค. 2569</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">สถานที่</div>
+          <div class="meta-val">อาคาร 3 / ห้อง 324</div>
+        </div>
+        <div class="meta-cell" style="grid-column:1/-1;">
+          <div class="meta-label">ครูประจำชั้น</div>
+          <div class="meta-val">นางสาววหันยา ใจนันตา</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div id="page-game" class="page">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-head-mark"></div>
+      <div class="sb-head-text">
+        <div class="sb-case-mono">คดี #256901</div>
+        <div class="sb-title">ม.5/6 ภาค 1/2569</div>
+      </div>
+    </div>
+
+    <div class="sb-prog">
+      <div class="sb-prog-row">
+        <span>หลักฐาน</span>
+        <span id="prog-count">0 / 12</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="pill-row" id="pill-row"></div>
+    </div>
+
+    <div class="sb-sec">
+      <div class="sb-sec-label">ผู้ต้องสงสัย — แตะเพื่อทำเครื่องหมาย</div>
+      <div class="sus-list" id="sus-list"></div>
+    </div>
+
+    <div class="sb-sec" style="flex:1;">
+      <div class="sb-sec-label">บันทึกนักสืบ</div>
+      <div class="nb-add">
+        <input class="nb-inp" id="nb-inp" placeholder="จดสมมติฐาน..." maxlength="100"
+          onkeydown="if(event.key==='Enter')addNote()">
+        <button class="nb-btn" onclick="addNote()">+</button>
+      </div>
+      <div class="nb-notes" id="nb-notes"><p class="nb-empty">ยังไม่มีบันทึก</p></div>
+    </div>
+
+    <div class="sb-foot">
+      <button class="btn-verdict" onclick="goVerdict()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+        ตัดสินคดี
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="main-tabs">
+      <button class="tab-btn active" id="tab-draw" onclick="switchTab('draw')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        ดึงหลักฐาน
+      </button>
+      <button class="tab-btn" id="tab-all" onclick="switchTab('all')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        หลักฐานทั้งหมด
+      </button>
+    </div>
+
+    <!-- DRAW -->
+    <div class="tab-panel active" id="panel-draw">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;">
+        <div class="draw-zone">
+          <div class="card-wrap">
+            <div class="card-tape tl"></div>
+            <div class="card-tape tr"></div>
+            <div class="card" id="card-main">
+              <div class="card-empty-state">
+                <div class="empty-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <p>กดปุ่มด้านล่าง<br>เพื่อดึงหลักฐานชิ้นแรก</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn-draw" id="draw-btn" onclick="drawCard()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            <span id="draw-btn-txt">ดึงหลักฐาน</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL -->
+    <div class="tab-panel" id="panel-all">
+      <div style="padding:28px;max-width:780px;">
+        <div class="ev-header">
+          <span class="ev-title">หลักฐานทั้งหมด</span>
+          <span class="ev-sub" id="ev-sub">ดึงแล้ว 0 จาก 12 ชิ้น</span>
+        </div>
+        <table class="ev-table">
+          <thead>
+            <tr>
+              <th style="width:70px;">วันที่</th>
+              <th>นักเรียน</th>
+              <th>สถานที่</th>
+              <th>บันทึก</th>
+              <th style="width:80px;">สถานะ</th>
+            </tr>
+          </thead>
+          <tbody id="ev-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VERDICT ═══ -->
+<div id="page-verdict" class="page">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:60px 24px;">
+    <div class="verdict-wrap">
+      <div class="verdict-head">
+        <div class="verdict-head-mark"></div>
+        <div>
+          <div class="verdict-h">ประกาศคำตัดสิน</div>
+          <div class="verdict-sub">คุณดึงหลักฐานไปแล้ว <strong id="v-count" style="color:var(--chalk)"></strong> ชิ้น</div>
+        </div>
+      </div>
+      <div class="verdict-body">
+        <label class="vf-label">ผู้ต้องสงสัยหลัก</label>
+        <select class="vf-select" id="v-select">
+          <option value="">— เลือกนักเรียน —</option>
+        </select>
+        <label class="vf-label">เหตุผลของคุณ</label>
+        <textarea class="vf-textarea" id="v-reason" placeholder="หลักฐานชิ้นไหนทำให้คุณสงสัยคนนี้ที่สุด?"></textarea>
+        <div class="vf-error" id="v-err">กรุณาเลือกผู้ต้องสงสัยและใส่เหตุผลก่อน</div>
+        <div class="vf-row">
+          <button class="btn-cancel" onclick="showPage('page-game')">ยกเลิก</button>
+          <button class="btn-confirm" onclick="submitVerdict()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ยืนยัน
+          </button>
+        </div>
+      </div>
+      <div class="verdict-foot">
+        <button class="btn-vback" onclick="showPage('page-game')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+          กลับดูหลักฐาน
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div id="page-result" class="page">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:60px 24px;">
+    <div class="result-wrap" id="result-wrap"></div>
+  </div>
+</div>
+
+<script>
+const SUSPECTS=[
+  {id:4,  name:"นายพัชรพงศ์ กุมารทะ",       abbr:"พช"},
+  {id:8,  name:"นายภูรินท์ มณีเดชโภคสถ",     abbr:"ภร"},
+  {id:9,  name:"นายรามาธิป คำสุดำ",           abbr:"รม"},
+  {id:12, name:"นางสาวปริณดา ไม้กลิ่นหอม",   abbr:"ปน"},
+  {id:15, name:"นายภูวนัย กำคำ",             abbr:"ภน"},
+  {id:16, name:"นางสาวพัชรินทร์ เขื่อนขัน", abbr:"พร"},
+];
+
+const EVIDENCE=[
+  {id:1,  date:"1 ก.ค.",  name:"นายภูรินท์ มณีเดชโภคสถ (เลขที่ 8)",      loc:"ประตู 3 ฝั่งหลัง",            status:"late",   note:"วิ่งข้ามถนนมาจากร้านสะดวกซื้อ เวลา 07:55 น.",                              sus:true,  conflict:false, relatedId:8},
+  {id:2,  date:"1 ก.ค.",  name:"นายรามาธิป คำสุดำ (เลขที่ 9)",            loc:"กำแพงข้างอาคารวิทยาศาสตร์",   status:"late",   note:"รปภ. ตรวจพบว่าเดินอ้อมจากซอยข้างโรงเรียน ไม่ผ่านประตูหลัก",          sus:true,  conflict:false, relatedId:9},
+  {id:3,  date:"1 ก.ค.",  name:"นายภูวนัย กำคำ (เลขที่ 15)",              loc:"ซอกห้องน้ำหลังอาคาร 2",        status:"late",   note:"พบโดยครูเวร — อ้างว่าเพิ่งมาถึง แต่รปภ. ไม่มีบันทึกสแกนบัตรวันนี้",   sus:true,  conflict:false, relatedId:15},
+  {id:4,  date:"2 ก.ค.",  name:"นายพัชรพงศ์ กุมารทะ (เลขที่ 4)",          loc:"บันไดหนีไฟ อาคาร 3",           status:"late",   note:"มีผู้พบเห็นเดินขึ้นมาจากชั้นใต้ดิน เวลา 07:35 น.",                      sus:true,  conflict:false, relatedId:4},
+  {id:5,  date:"2 ก.ค.",  name:"นายภูรินท์ มณีเดชโภคสถ (เลขที่ 8)",      loc:"รั้วด้านหลังแปลงเกษตร",        status:"late",   note:"พบคราบดินเปื้อนรองเท้า ไม่ตรงกับเส้นทางปกติที่อ้างว่าเดินมา",          sus:true,  conflict:false, relatedId:8},
+  {id:6,  date:"2 ก.ค.",  name:"นายภูวนัย กำคำ (เลขที่ 15)",              loc:"หลังอาคารหอประชุม",             status:"late",   note:"ครูประจำชั้นเรียกตักเตือนเป็นวันที่สองแล้ว — ไม่มีใบลาจากผู้ปกครอง", sus:true,  conflict:false, relatedId:15},
+  {id:7,  date:"3 ก.ค.",  name:"นายภูรินท์ มณีเดชโภคสถ (เลขที่ 8)",      loc:"ซอยข้างโรงเรียน",              status:"late",   note:"พยานเห็นลงจากรถจักรยานยนต์รับจ้าง แต่ภูรินท์อ้างว่าเดินมาเอง",         sus:true,  conflict:false, relatedId:8},
+  {id:8,  date:"3 ก.ค.",  name:"นายภูวนัย กำคำ (เลขที่ 15)",              loc:"บันไดหลังอาคาร 3",              status:"late",   note:"แอบขึ้นอาคารขณะทุกคนยืนร้องเพลงชาติ — หลีกเลี่ยงลงชื่อโดยตรง",       sus:true,  conflict:false, relatedId:15},
+  {id:9,  date:"6 ก.ค.",  name:"นายภูวนัย กำคำ (เลขที่ 15)",              loc:"อาคาร 4 ชั้นลอย",               status:"absent", note:"พบนั่งลำพังในอาคาร 4 ขณะที่ทุกคนอยู่ในห้องเรียนแล้ว — ไม่มีบันทึกการมา",sus:true, conflict:false, relatedId:15},
+  {id:10, date:"7 ก.ค.",  name:"นายภูรินท์ มณีเดชโภคสถ (เลขที่ 8)",      loc:"ประตู 1",                       status:"normal", note:"ระบบสแกนบันทึก 07:53 น. — ตรงเวลา",                                      sus:false, conflict:true,  conflictNote:"น่าสังเกต: วันอื่นสายทุกวัน แต่วันนี้ตรงเวลาพอดี — มีคนสแกนแทนหรือไม่?", relatedId:8},
+  {id:11, date:"7 ก.ค.",  name:"นายรามาธิป คำสุดำ (เลขที่ 9)",            loc:"หน้าอาคารอำนวยการ",             status:"late",   note:"ยื่นใบลาป่วยย้อนหลัง แต่ไม่มีใบรับรองแพทย์แนบมา",                     sus:true,  conflict:false, relatedId:9},
+  {id:12, date:"2 ก.ค.",  name:"นางสาวปริณดา ไม้กลิ่นหอม (เลขที่ 12)",   loc:"ห้องพยาบาล (อ้างว่า)",          status:"late",   note:"แจ้งว่าปวดศีรษะ แต่พยาบาลบันทึกว่าไม่มีนักเรียนเข้าห้องพยาบาลช่วงเช้า", sus:true, conflict:true,  conflictNote:"ข้อมูลขัดแย้ง: อ้างอยู่ห้องพยาบาล แต่บันทึกพยาบาลไม่ตรง — อาจเป็นข้อแก้ตัวเท็จ", relatedId:12},
+];
+
+const KEY='detective256901v3';
+let S;
+
+function loadS(){
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){s.flagged=new Set(s.flagged||[]);return s;}}catch(e){}
+  return{deck:shuffle([...EVIDENCE.map(e=>e.id)]),drawn:[],flagged:new Set(),notes:[],page:'page-intro'};
+}
+function saveS(){localStorage.setItem(KEY,JSON.stringify({...S,flagged:[...S.flagged]}));}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  S.page=id;saveS();
+}
+
+function startGame(){
+  showPage('page-game');
+  renderSus();renderNotes();updateProg();renderEvTable();updateDrawBtn();renderPills();
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+  if(name==='all')renderEvTable();
+}
+
+function renderSus(){
+  const el=document.getElementById('sus-list');
+  el.innerHTML=SUSPECTS.map(s=>{
+    const hits=Math.min(3,S.drawn.filter(id=>{const e=EVIDENCE.find(x=>x.id===id);return e&&e.relatedId===s.id&&e.sus;}).length);
+    const f=S.flagged.has(s.id);
+    const dots=[0,1,2].map(i=>`<div class="sh${i<hits?' on':''}"></div>`).join('');
+    return`<div class="sus-row${f?' flagged':''}" onclick="toggleFlag(${s.id})">
+      <div class="sus-av">${s.abbr}</div>
+      <div class="sus-name">${s.name}</div>
+      <div class="sus-hits">${dots}</div>
+    </div>`;
+  }).join('');
+}
+function toggleFlag(id){
+  if(S.flagged.has(id))S.flagged.delete(id);else S.flagged.add(id);
+  saveS();renderSus();
+}
+
+function addNote(){
+  const inp=document.getElementById('nb-inp');
+  const t=inp.value.trim();if(!t)return;
+  S.notes.push(t);inp.value='';saveS();renderNotes();
+}
+function delNote(i){S.notes.splice(i,1);saveS();renderNotes();}
+function renderNotes(){
+  const el=document.getElementById('nb-notes');
+  if(!S.notes.length){el.innerHTML='<p class="nb-empty">ยังไม่มีบันทึก</p>';return;}
+  el.innerHTML=S.notes.map((n,i)=>`<div class="nb-note"><span>${n}</span><button class="nb-del" onclick="delNote(${i})">×</button></div>`).join('');
+}
+
+function updateProg(){
+  const n=S.drawn.length,pct=Math.round(n/EVIDENCE.length*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-count').textContent=n+' / 12';
+}
+function renderPills(){
+  const el=document.getElementById('pill-row');
+  el.innerHTML=EVIDENCE.map((_,i)=>`<div class="pill${i<S.drawn.length?' done':''}"></div>`).join('');
+}
+function updateDrawBtn(){
+  const btn=document.getElementById('draw-btn');
+  const txt=document.getElementById('draw-btn-txt');
+  if(S.deck.length===0){btn.disabled=true;txt.textContent='ดึงหลักฐานครบแล้ว';}
+  else{btn.disabled=false;txt.textContent='ดึงหลักฐาน (เหลือ '+S.deck.length+' ชิ้น)';}
+}
+
+function drawCard(){
+  if(!S.deck.length)return;
+  const id=S.deck.pop();S.drawn.push(id);saveS();
+  const ev=EVIDENCE.find(e=>e.id===id);
+  renderCard(ev,S.drawn.length);
+  renderSus();updateProg();renderPills();updateDrawBtn();
+}
+
+const BADGE={late:'มาสาย',normal:'มาปกติ',absent:'ขาด/ไม่พบ'};
+function renderCard(ev,seq){
+  const el=document.getElementById('card-main');
+  el.classList.add('has-content');
+  el.innerHTML=`<div class="card-inner">
+    <div class="card-meta-row">
+      <div class="card-seq">หลักฐาน ${seq||S.drawn.length} / 12</div>
+      <span class="badge badge-${ev.status}">${BADGE[ev.status]}</span>
+    </div>
+    <div class="card-rule"></div>
+    <div class="card-person">${ev.name}</div>
+    <div class="card-date">${ev.date}</div>
+    <div class="card-loc">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      ${ev.loc}
+    </div>
+    <div class="card-note-box">"${ev.note}"</div>
+    ${ev.sus?`<div class="flag-sus">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <span>พฤติกรรมน่าสงสัย — ทำเครื่องหมายที่แถบซ้าย</span>
+    </div>`:''}
+    ${ev.conflict?`<div class="flag-conflict">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+      <span><strong>หลักฐานขัดแย้ง:</strong> ${ev.conflictNote}</span>
+    </div>`:''}
+  </div>`;
+  el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip');
+}
+
+function renderEvTable(){
+  const drawnSet=new Set(S.drawn);
+  document.getElementById('ev-sub').textContent='ดึงแล้ว '+S.drawn.length+' จาก 12 ชิ้น';
+  const tbody=document.getElementById('ev-tbody');
+  tbody.innerHTML=EVIDENCE.map(ev=>{
+    if(!drawnSet.has(ev.id)){
+      return`<tr class="locked"><td></td><td></td><td></td><td></td><td></td></tr>`;
+    }
+    return`<tr>
+      <td class="td-date">${ev.date}</td>
+      <td><div class="td-name">${ev.name}</div></td>
+      <td class="td-loc">${ev.loc}</td>
+      <td class="td-note">${ev.note}</td>
+      <td><span class="badge badge-${ev.status}" style="font-size:9px;padding:2px 8px;">${BADGE[ev.status]}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function goVerdict(){
+  document.getElementById('v-count').textContent=S.drawn.length;
+  const sel=document.getElementById('v-select');
+  sel.innerHTML='<option value="">— เลือกนักเรียน —</option>'+
+    SUSPECTS.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  showPage('page-verdict');
+}
+
+function submitVerdict(){
+  const sel=document.getElementById('v-select');
+  const reason=document.getElementById('v-reason').value.trim();
+  const errEl=document.getElementById('v-err');
+  if(!sel.value||!reason){errEl.style.display='block';return;}
+  errEl.style.display='none';
+  const cid=parseInt(sel.value);
+  const chosen=SUSPECTS.find(s=>s.id===cid);
+  const ANS=15;
+  const correct=cid===ANS;
+  const ans=SUSPECTS.find(s=>s.id===ANS);
+
+  const iconSvg=correct
+    ?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+    :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>`;
+
+  document.getElementById('result-wrap').innerHTML=`
+    <div class="result-verdict-banner">
+      <div class="result-icon ${correct?'correct':'wrong'}">${iconSvg}</div>
+      <div class="result-verdict-text">
+        <div class="result-verdict-label">คำตัดสิน — คดี #256901</div>
+        <div class="result-verdict-h">${correct?'ถูกต้อง คุณไขคดีสำเร็จ':'คำตัดสินผิดพลาด'}</div>
+      </div>
+    </div>
+
+    <div class="result-chosen-row">
+      คุณเลือก: <strong>${chosen.name}</strong><br>
+      ${correct?'การวิเคราะห์ของคุณตรงกับข้อสรุปของฝ่ายปกครอง':'ฝ่ายปกครองมีข้อสรุปที่แตกต่างออกไป'}
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-label">เหตุผลของคุณ</div>
+      <p style="font-style:italic;">"${reason}"</p>
+    </div>
+
+    <div class="result-section answer">
+      <div class="result-section-label">${correct?'สรุปคดี (ยืนยัน)':'เฉลยคดี'}</div>
+      <p><strong>${ans.name}</strong> มีพฤติกรรมโกหกเรื่องการมาโรงเรียนชัดเจนที่สุด</p>
+      <p>
+        • <strong>4 วันติดต่อกัน</strong> (1, 2, 3, 6 ก.ค.) ไม่มีบันทึกสแกนบัตรที่ประตูหลัก<br>
+        • พบตัวในพื้นที่เฝ้าระวัง: ซอกห้องน้ำ, หลังหอประชุม, บันไดหลัง, อาคาร 4 ชั้นลอย<br>
+        • วันที่ 6 ก.ค. — ขาดเรียนโดยไม่แจ้ง แต่มีผู้พบตัวในโรงเรียน<br>
+        • ไม่มีใบลา ไม่มีเหตุผลจากผู้ปกครองแม้แต่วันเดียว
+      </p>
+    </div>
+
+    <div class="result-warn">
+      ⚠ หลักฐานที่ควรระวัง: บันทึกห้องพยาบาลของ ปริณดา และบัตรสแกนของ ภูรินท์ วันที่ 7 ก.ค. เป็นข้อมูลขัดแย้ง ไม่ควรนำมาสรุปตรงๆ
+    </div>
+
+    <div class="result-btns">
+      <button class="btn-replay" onclick="resetGame()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        เล่นใหม่
+      </button>
+      <button class="btn-back-ev" onclick="showPage('page-game')">กลับดูหลักฐาน</button>
+    </div>
+  `;
+  showPage('page-result');
+}
+
+function resetGame(){
+  localStorage.removeItem(KEY);
+  S=loadS();
+  const card=document.getElementById('card-main');
+  card.classList.remove('has-content');
+  card.innerHTML=`<div class="card-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><p>กดปุ่มด้านล่าง<br>เพื่อดึงหลักฐานชิ้นแรก</p></div>`;
+  startGame();
+}
+
+S=loadS();
+if(S.page&&S.page!=='page-intro'){
+  startGame();
+  if(S.page==='page-verdict')goVerdict();
+  else if(S.page==='page-result')showPage('page-game');
+  else showPage(S.page);
+  if(S.drawn.length>0){
+    const lastEv=EVIDENCE.find(e=>e.id===S.drawn[S.drawn.length-1]);
+    if(lastEv)renderCard(lastEv,S.drawn.length);
+  }
+}
+</script>
+</body>
+</html>
